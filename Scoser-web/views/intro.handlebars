@@ -1,0 +1,80 @@
+<!-- Bread crumb -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">Smart Contract</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Introduction</li>
+        </ol>
+    </div>
+</div>
+<!-- End Bread crumb -->
+<!-- Container fluid  -->
+<div class="container-fluid">
+    <!-- Start Page Content -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-12">
+                            <div class="card-content">
+                                <h2>智能合约入门</h2>
+                                <p class="text-lg-left" style="font-size: 17px">    传统的应用系统后端拥有一个集中化的数据库，而在区块链世界里，区块链成为构建点对点网络之上的一个去中心化的分布式账本数据库。区块链系统已经与传统系统有着本质不同，它运行在由多个节点机器组成的点对点网络上。区块链工作是通过多个节点协作完成的。即每个节点上会运行一个程序，通常称为智能合约（Smart Contract）。所以通常会把写区块链程序改称写智能合约。虽然比特币（Bitcoin）上也能写智能合约，但是比特币所支持的语法仅与交易有关，能做的事情比较有限。区块链上的智能合约出现在以以太坊为代表的区块链2.0时代。因此目前提到写智能合约，通常指的是支持执行图灵完备程序的以太坊（Ethereum）区块链。另一个超级账本Hyperledger项目，出现了另一个名词叫链码，即Chaincode，也称为智能合约。智能合约的本质上就是运行在区块链上的程序。</p>
+                                <br>
+                                <hr>
+                                <br>
+                                <h4>1. 智能合约可以做什么?</h4>
+                                <p class="text-lg-left" style="font-size: 17px">目前最常见的智能合约是各种加密货币合约，开发者可以很容易地透过部署一个智能合约，来提供运行于以太坊上的新加密代币。如果这份智能合约相容于ERC20标准1，开发者不需要重新开发从挖矿到交易的整个代币生态系，你的新加密代币就可以直接使用支持支持以太坊的电子钱包来收送，大大降低了建立新加密代币的门槛。从用户角度看，智能合约被看做是一个自动担保账户。一次买卖交易在现实世界里，需要双方一手交钱一手交货才能完成，或通过中间第三方中介才能顺利完成。而在区块链系统中，买卖交易时，每发起新的交易可以通过创建一个合约，在这个合约程序中记录交易的信息，这样通过区块链网络自动传输到其他用户。通过合约程序自动完成交易过程的校验和完成交易。</p>
+                                <p class="text-lg-left" style="font-size: 17px">智能合约也可以用来运作各种公开公正的自动服务机构（DAO，权力下放自治组织）。透过分散在全球各节点上运作的智能合约，所有运作与决策都是公开透明的，降低了交易的不确定性（不确定性）。智能合约从技术上是用一段代码实现了可校验的业务流程和业务逻辑，被部署在区块链上。所有交易记录，可以通过合约的再次执行进行校验并重新生成信息。</p>
+                                <br>
+                                <hr>
+                                <br>
+                                <h4>2. 链码合约</h4>
+                                <p class="text-lg-left" style="font-size: 17px">链码即Chaincode通常处理由网络成员赞同的业务逻辑，因此它类似于“智能合约”。 可以调用Chaincode来更新或查询提案交易中的ledger。如果有适当的许可，chaincode可以调用另一个chaincode，以访问其状态，无论是在同一个Channel还是在不同的Channel中。 请注意，如果被调用的Chaincode与调用Chaincode位于不同的通道上，则只允许读取查询。</p>
+                                <h5>2.1 Chaincode API</h5>
+                                <p class="text-lg-left" style="font-size: 17px">每个chaincode程序必须实现Chaincode interface,其方法被调用以回应收到的交易。特别是当Chaincode接收实例化或升级transaction时，将调用Init方法，以便Chaincode可以执行任何必要的初始化，包括应用程序状态的初始化。 调用Invoke方法是为了响应接收调用transaction来处理transaction提议。</p>
+                                <p class="text-lg-left" style="font-size: 17px">chaincode“shim”API中的另一个接口是ChaincodeStubInterface,用于访问和修改ledger，并在chaincode之间进行调用。以下将通过实现一个管理“资产”的简单chaincode应用程序来演示如何使用这些API。本应用程序是一个基本样本chaincode，用于在ledger上创建资产（key-value对）。现在，需要为chaincode应用程序创建一个目录作为$GOPATH/src/的子目录。</p>
+                                <p class="text-lg-left" style="font-size: 17px">为了简单起见，我们使用下面的命令：<code>mkdir -p $GOPATH/src/sacc && cd $GOPATH/src/sacc</code></p>
+                                <p class="text-lg-left" style="font-size: 17px">现在，创建将用代码填充的源文件：<code>touch sacc.go</code></p>
+                                <h5>2.2 Housekeeping</h5>
+                                <p class="text-lg-left" style="font-size: 17px">首先，我们从一些Housekeeping开始。与每个chaincode一样，它实现了Chaincode接口，即Init和Invoke函数。 因此，让我们添加go import语句以获取chaincode的必要依赖关系。 我们将导入chaincode shim包和peer protobuf包。 接下来，让我们添加一个结构SimpleAsset作为Chaincode shim函数的接收器。</p>
+                                <h5>2.3 Initializing the Chaincode</h5>
+                                <p class="text-lg-left" style="font-size: 17px">下面，我们实现 Init 函数。请注意，chaincode升级也会调用此函数。在编写将升级现有chaincode的代码时，请确保适当地修改Init函数。 特别是，如果没有“migration”(迁移)，或没有任何东西需要作为升级的一部分进行初始化时，请提供一个空的“Init”方法。接下来，我们将使用ChaincodeStubInterface.GetStringArgs函数检索Init调用的参数，并检查其有效性。 在我们的例子中，我们期待一个key-value对。接下来，已经确定该调用是有效的，我们将把初始状态存储在ledger中。 要做到这一点，我们将调用ChaincodeStubInterface.PutState，并将key和value作为参数传入。 假设一切顺利，会返回一个指示初始化成功的peer.Response对象。</p>
+                                <h5>2.4 Invoking the Chaincode</h5>
+                                <p class="text-lg-left" style="font-size: 17px">首先，我们加入Invoke函数的signature（签名）。与上面的Init函数一样，我们需要从ChaincodeStubInterface中提取参数。 Invoke函数的参数，将是要调用的chaincode应用程序函数的名称。 在我们的例子中，我们的应用程序只有两个函数：set和get，它们允许设置资产的value或检索当前状态。 我们首先调用ChaincodeStubInterface.GetFunctionAndParameters来提取该chaincode应用函数的函数名称和参数。</p>
+                                <p class="text-lg-left" style="font-size: 17px">接下来，我们将验证函数名称是set还是get，并调用这些chaincode应用函数，通过shim返回相应的响应。shim.Success或shim.Error函数将响应序列化为gRPC protobuf消息。</p>
+                                <br>
+                                <hr>
+                                <br>
+                                <h4>3. 实现Chaincode应用程序</h4>
+                                <p class="text-lg-left" style="font-size: 17px">如前所述，我们的chaincode应用程序实现了，两个可以通过Invoke函数调用的函数。 现在我们来实现这些功能。 请注意，正如我们上面提到的，为了访问ledger的状态，我们将利用chaincode shim API的ChaincodeStubInterface.PutState和ChaincodeStubInterface.GetState函数。</p>
+                                <br>
+                                <hr>
+                                <br>
+                                <h4>4. Building Chaincode</h4>
+                                <h5>使用Dev模式测试</h5>
+                                <p class="text-lg-left" style="font-size: 17px">通常，chaincodes由peer启动和维护。 然而，在“Dev模式”下，链chaincodes由用户构建并启动。 在快速code/build/run/debug周期迭代的开发阶段，此模式非常有用。我们通过利用，为样例dev网络，预先生成的orderer和channel artifacts，来开始“Dev模式”。 因此，用户可以立即跳到编辑chaincode和调用的过程中。</p>
+                                <h5>安装 Hyperledger Fabric Samples</h5>
+                                <p class="text-lg-left" style="font-size: 17px">如果之前没有做过，请安装Hyperledger Fabric Samples。到fabric-samples目录的chaincode-docker-devmode 目录下:cd chaincode-docker-devmode</p>
+                                <h5>下载 Docker images</h5>
+                                <p class="text-lg-left" style="font-size: 17px">我们需要四个Docker镜像，才能使“dev模式”按照提供的docker compose script运行。 如果您安装了fabric-samples repo clone，并按照说明下载平台特定的二进制文件，那么你应该，已经在本地安装了必要的Docker镜像。使用docker images命令，查看本地的Docker Registry。</p>
+                                <br>
+                                <hr>
+                                <br>
+                                <h4>5. Chaincode加密</h4>
+                                <p class="text-lg-left" style="font-size: 17px">在某些情况下，加密与key相关的value（全部加密或者部分加密）可能是有用的。例如，如果一个人的社会安全号码，或地址正在写入ledger，那么你可能不希望这些数据以明文形式出现。 Chaincode加密，通过利用实体扩展实现，该BCCSP包装，执行诸如加密和椭圆曲线数字签名的加密操作。例如，为了加密，Chaincode的调用者通过transient字段传递加密密钥。然后可以将相同的密钥用于随后的查询操作，从而允许对加密的状态值进行适当的解密。有关更多信息和示例，请参阅fabric/examples目录中的Encc示例。特别注意utils.go帮手程序。此实用工具加载Chaincode shim API和实体扩展，并构建样本加密Chaincode，随后利用新类函数（例如，encryptAndPutState＆getStateAndDecrypt）。因此，chaincode现在可以结合Get和Put的基本shim API（填充API）以及Encrypt和Decrypt的附加功能。</p>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End PAge Content -->
+</div>
+<!-- End Container fluid  -->

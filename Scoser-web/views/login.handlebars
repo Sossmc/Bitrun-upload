@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        .cj_button{
+            color:white;
+            border-radius: 5px;
+            background-color:#17a2b8;
+            font-size:30px;
+            opacity:0.6;
+        }
+        .cj_button:hover{
+            color:white;
+            opacity:1;
+        }
+        </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Scoser</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="css/demo.css" />
+    <link rel="stylesheet" href="css/templatemo-style.css">
+
+    <script type="text/javascript" src="js/modernizr.custom.86080.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<ul class="cb-slideshow">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row cb-slideshow-text-container ">
+        <div class= "tm-content col-xl-6 col-sm-8 col-xs-8 ml-auto section">
+            <header class="mb-5"><h1>登陆</h1></header>
+
+            <P class="mb-5">登陆来使用Scoser的多项功能！</P>
+
+            <form onsubmit="return check()" action="/login" method="get" name="register_form"class="subscribe-form">
+                <div class="row form-section">
+
+                    <div class="col-md-7 col-sm-7 col-xs-7">
+                        <input style="margin-bottom:5px" name="id" type="text" class="form-control" id="id" placeholder="用户名..." value={{user_id}} >
+
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-xs-7">
+                        <input name="pwd" type="password" class="form-control" id="pwd" placeholder="密码..."  value={{pwd}}>
+
+                    </div>
+                    <div class="col-md-5 col-sm-5 col-xs-5">
+
+                        <button type="submit" class="tm-btn-subscribe">登陆</button>
+                        <a href="/register.html"><button  type='button' class="tm-btn-subscribe cj_button"  >注册</button></a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+
+        </div>
+    </div>
+    <div class="footer-link">
+        <p>Copyright © 2018 Designer
+            </p>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="js/particles.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript">
+
+        function check()
+        {
+
+                if(document.register_form.id.value=="")
+                {
+                    alert("用户名不能为空!");
+                    document.register_form.id.focus();
+                    return false;
+                }
+
+
+        }
+
+window.onload=function(){ 
+
+var state1='{{state}}';
+            if(state1=="fail") {
+
+                alert("密码错误");
+                document.register_form.id.focus();
+            }
+
+            else if(state1=="success")alert("注册成功");
+} 
+            
+function jump_to_register(){
+    window.location.herf="http://www.baidu.com"
+}
+    </script>
+</html>

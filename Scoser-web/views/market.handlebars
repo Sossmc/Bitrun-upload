@@ -1,0 +1,85 @@
+            <!-- Bread crumb -->
+
+            <script type="text/javascript">
+            window.onload=function(){
+                var buyer_account_id={{account_id}};
+                buyer_account_id=buyer_account_id.toString();
+                $.post("https://developers.vnt.link/chaincode/query",
+                    JSON.stringify({
+                    "channel":"mychannel",
+                    "ccName":"chaincode_example02",
+                    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJKdGkiOiIxMTQ5NzkifQ.5ERN44vbFdU7UmpVvysD1xCV82Q0eUfAlUYqtpumLIk",
+                    "fcn":"query",
+                    "args":[buyer_account_id]
+                    }),
+                function(data_buyer,status){
+                    console.log("buyer",data_buyer);
+                    console.log("buyer",data_buyer.payload);
+                    var x=document.getElementById('balcance');
+                    x.innerHTML=data_buyer.payload;
+                })
+                
+            }
+            </script>
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Contract Module</h3> </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/market">Extra</a></li>
+                        <li class="breadcrumb-item active">Store</li>
+                        
+                    </ol>
+                </div>
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-11" style="margin:0 auto;">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4>Smart Contract Module </h4> <button type="button" class="pull-right btn btn-xm btn-warning btn-rounded m-b-8 m-l-3 btn-xm" style="position:relative;margin-left:100px;"><strong>Balance  $<a id="balcance">0</a></strong></button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Author</th>
+                                                <th>Description</th>
+                                                <th>Content</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each item}}
+                                            <tr>
+                                                <th scope="row">{{name}}</th>
+                                                <td>¥{{price}}</td>
+                                                <td>{{author_id}}</td>
+                                                <td>{{description}}</td>
+                                                <td>
+                                                    <form action="/details" method="get">
+                                                        <input type="hidden" id="name" name="name" value={{name}}>
+                                                       <input type="hidden" id="author_account_id" name="author_account_id" value={{author_account_id}}>
+                                                        <button type="submit" class="btn btn-success btn-sm m-b-10 m-l-5">Details</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+                <!-- End PAge Content -->
+            </div>
+            <!-- End Container fluid  -->
+
+            

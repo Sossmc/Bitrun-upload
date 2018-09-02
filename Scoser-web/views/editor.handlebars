@@ -1,0 +1,601 @@
+			<!-- Bread crumb -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Editor</h3> </div>
+
+                <input type="file" id="files" onChange="loadXML()" name="myFile" accept="application/xml" style="position:absolute; filter:alpha(opacity=0); opacity:0; width:0px; " />
+				<div class="inbox-rightbar">
+	                <div class="" role="toolbar">
+	                    <div class="btn-group">
+	                        <li  class="btn btn-light waves-effect" onClick="Blockly.mainWorkspace.undo()"><img src="images\edi-icon\undo.png" height="23" width="23" class="dark-logo" title="undo" /></li>
+	                        <li  class="btn btn-light waves-effect" onClick="Blockly.mainWorkspace.undo(true)"><img src="images\edi-icon\redo.png" height="23" width="23" class="dark-logo" title="redo"/></li>
+	                        <li  class="btn btn-light waves-effect" onClick="saveWorkspace()"><img src="images\edi-icon\save.png" height="23" width="23" class="dark-logo" title="save"/></li>
+	                        <li  class="btn btn-light waves-effect" onClick="loadWorkspace()"><img src="images\edi-icon\load.png" height="23" width="23" class="dark-logo" title="load"/></li>
+	                        
+	                        <li  type="hidden" class="btn btn-light waves-effect" onClick="files.click()"><img src="images\edi-icon\loadxml.png" height="23" width="23" class="dark-logo" title="load XML"/></li>
+                        <form id="from_publish" action='/publish' method='get'>
+                        <input type="hidden" id="content_publish" name="content_publish" value="123">
+                        <input type="hidden" id="price_publish" name="price_publish" value="456">
+                        <input type="hidden" id="name_publish" name="name_publish" value="789">
+                        <input type="hidden" id="description_publish" name="description_publish" value="123">
+	                        <li  class="btn btn-light waves-effect"><a onClick="publish()"><img src="images\edi-icon\publish.png" height="23" width="23" class="dark-logo" title="publish"/></a></li>
+                        </form>
+	                    <form id="from_upload" action='/upload' method='get'>
+                        <input type="hidden" id="content_upload" name="content_upload" value="123">
+                        <input type="hidden" id="price_upload" name="price_upload" value="456">
+                        <input type="hidden" id="name_upload" name="name_upload" value="789">
+                        <input type="hidden" id="description_upload" name="description_upload" value="123">
+                            <li  class="btn btn-light waves-effect"><a onClick="upload()"><img src="images\edi-icon\cloud.png" height="23" width="23" class="dark-logo" title="upload"/></a></li>
+                        </form>
+	                    </div>
+	                    <div class="btn-group">
+	                    	
+	                        <button type="button" class="btn btn-light dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="false">
+                               <img src="images\edi-icon\saveas.png" height="23" width="23" class="dark-logo" title="save as" />
+                               <b class="caret m-l-5"></b>
+                           	</button>
+  
+	                        <div class="dropdown-menu" >
+	                            <span class="dropdown-header" style="text-align: center;">Save as</span>
+	                            <button class="dropdown-item" onClick="saveGO()" style="width:96%;border-radius:5px;background-color:#aaaaaa;text-align: center;">Go</button>
+                                <button class="dropdown-item" onClick="saveXML()" style="width:96%;border-radius:5px;background-color:#aaaaaa;text-align: center;">XML</button>
+	                            
+	                        </div>
+	                    </div>
+	                </div>				
+	            </div>
+	                   
+				
+
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            
+            <div class="container-fluid">
+                <!-- Start Page Content -->
+                <div class="row">  
+
+            	<div class="page page-container app-container">
+				    <div id="blocklyDiv" class="main blockly-panel"></div>
+				        <div id="codeDiv1" class="main output-panel">
+				            <div class="dropdown-bar"> Language:
+				                <div id="im-just-an-underline">
+				                    <select id="languageDropdown1" class="languageDropdown" onChange="myUpdateFunction();">
+				                        <option value="Go" selected4="selected">Go</option>
+				                        <option value="Solidity">Solidity</option>
+				                        <option value="Natural">Natural</option>
+				                    </select>
+				                </div>
+				            </div>
+				            <hr class="POps">
+
+				        </div>    
+
+                        
+
+				    </div>
+				</div>
+                </div>
+    <script type="text/javascript">
+(function() {
+  var delay;
+
+  delay = function(ms, func) {
+    return setTimeout(func, ms);
+  };
+
+  toastr.options = {
+    positionClass: 'toast-bottom-left'
+  };
+
+  // delay(1000, function() {
+  //   return toastr.success('Have fun storming the castle!', 'Miracle Max Says');
+  // });
+
+  // delay(1500, function() {
+  //   return toastr.warning('My name is Inigo Montoya. You Killed my father, prepare to die!');
+  // });
+
+  // delay(2000, function() {
+  //   return toastr.error('I do not think that word means what you think it means.', 'Inconceivable!');
+  // });
+
+}).call(this);
+</script>
+ 
+    <div style="display:none" id="playButton" class="play-button material-icons">Run</div>
+    <xml id="toolbox" style="display: none">
+        <category name=" Initialize " colour="100" expanded="false">
+            <block type="chaincode_init"></block>
+            <block type="chaincode_init">
+                <next>
+                    <shadow type="chaincode_body"> </shadow>
+                </next>
+            </block>
+            <block type="chaincode_init_body" disabled="true"></block>
+        </category>
+        <category name=" Body " colour="200">
+            <block type="chaincode_body"></block>
+            <block type="chaincode_init_body" disabled="true"></block>
+        </category>
+        <sep gap="32"></sep>
+        <category name=" Assembly　" colour="300">
+            <block type="chaincode_invoke"></block>
+            <block type="chaincode_query"></block>
+            <block type="chaincode_delete"></block>
+            <block type="set_value"></block>
+            <block type="math_number"></block>
+            <block type="math_single"></block>
+            <block type="math_constrain"></block>
+        </category>
+        
+        <category id="catVariables" colour="245" custom="VARIABLE" name=" Variable　">
+        </category>
+        <sep></sep>
+        <category colour="331" name=" Sample">
+            <category name="Request ">
+                <block type="chaincode_init">
+                    <statement name="init_func">
+                        <block type="set_value">
+                            <field name="data">people</field>
+                            <value name="VARIABLE">
+                                <shadow type="math_number">
+                                    <field name="NUM">20</field>
+                                </shadow>
+                            </value>
+                        </block>
+                    </statement>
+                    <next>
+                        <block type="chaincode_body">
+                            <statement name="body_func">
+                                <block type="chaincode_query">
+                                    <value name="user_Query">
+                                        <shadow type="variables_get">
+                                            <field name="VAR">A</field>
+                                        </shadow>
+                                    </value>
+                                </block>
+                            </statement>
+                        </block>
+                    </next>
+                </block>
+            </category>
+            <category name="Transaction">
+                <block type="chaincode_init">
+                    <statement name="init_func">
+                        <block type="set_value">
+                            <field name="data">A</field>
+                            <value name="VARIABLE">
+                                <shadow type="math_number">
+                                    <field name="NUM">100</field>
+                                </shadow>
+                            </value>
+                            <next>
+                                <block type="set_value">
+                                    <field name="data">B</field>
+                                    <value name="VARIABLE">
+                                        <shadow type="math_number">
+                                            <field name="NUM">200</field>
+                                        </shadow>
+                                    </value>
+                                </block>
+                            </next>
+                        </block>
+                    </statement>
+                    <next>
+                        <block type="chaincode_body">
+                            <statement name="body_func">
+                                <block type="chaincode_invoke">
+                                    <value name="user_A">
+                                        <shadow type="variables_get">
+                                            <field name="VAR">A</field>
+                                        </shadow>
+                                    </value>
+                                    <value name="user_B">
+                                        <shadow type="variables_get">
+                                            <field name="VAR">B</field>
+                                        </shadow>
+                                    </value>
+                                    <value name="money_num">
+                                        <shadow type="math_number">
+                                            <field name="NUM">50</field>
+                                        </shadow>
+                                    </value>
+                                    <next>
+                                        <block type="chaincode_query">
+                                            <value name="user_Query">
+                                                <shadow type="variables_get">
+                                                    <field name="VAR">A</field>
+                                                </shadow>
+                                            </value>
+                                            <next>
+                                                <block type="chaincode_delete">
+                                                    <value name="user_Delete">
+                                                        <shadow type="variables_get">
+                                                            <field name="VAR">B</field>
+                                                        </shadow>
+                                                    </value>
+                                                </block>
+                                            </next>
+                                        </block>
+                                    </next>
+                                </block>
+                        </block>
+                    </next>
+                    </statement>
+                </block>
+            </category>
+            
+
+            <category name="Token">
+                <block type="chaincode_init">
+                    <statement name="init_func">
+                        <block type="chaincode_query">
+                            <value name="user_Query">
+                                <shadow type="variables_get">
+                                    <field name="VAR">Bank</field>
+                                </shadow>
+                            </value>
+                            <next>
+                                
+                                <block type="chaincode_query">
+                                    <value name="user_Query">
+                                        <shadow type="variables_get">
+                                            <field name="VAR">A</field>
+                                        </shadow>
+                                    </value>
+                                <next>
+                                    <block type="set_value">
+                                        <field name="data">temp</field>
+                                        <value name="VARIABLE">
+                                            <shadow type="math_number">
+                                                <field name="NUM">0</field>
+                                            </shadow>
+                                        </value>
+                                    </block>
+                                </next>
+                            </next>
+                        </block>
+                    </statement>
+                    <next>
+                        <block type="chaincode_body">
+                            <statement name="body_func">
+                                <block type="chaincode_invoke">
+                                    <value name="user_A">
+                                        <shadow type="variables_get">
+                                            <field name="VAR">Bank</field>
+                                        </shadow>
+                                    </value>
+                                    <value name="user_B">
+                                        <shadow type="variables_get">
+                                            <field name="VAR">temp</field>
+                                        </shadow>
+                                    </value>
+                                    <value name="money_num">
+                                        <shadow type="math_number">
+                                            <field name="NUM">50</field>
+                                        </shadow>
+                                    </value>
+                                    <next>
+                                        <block type="chaincode_invoke">
+                                            <value name="user_B">
+                                                <shadow type="variables_get">
+                                                    <field name="VAR">temp</field>
+                                                </shadow>
+                                            </value>
+                                            <value name="user_A">
+                                                <shadow type="variables_get">
+                                                    <field name="VAR">A</field>
+                                                </shadow>
+                                            </value>
+                                            <value name="money_num">
+                                                <shadow type="math_number">
+                                                    <field name="NUM">50</field>
+                                                </shadow>
+                                            </value>
+                                            <next>
+                                                <block type="chaincode_query">
+                                                    <value name="user_Query">
+                                                        <shadow type="variables_get">
+                                                            <field name="VAR">A</field>
+                                                        </shadow>
+                                                    </value>
+                                                    <next>
+                                                        <block type="chaincode_delete">
+                                                            <value name="user_Delete">
+                                                                <shadow type="variables_get">
+                                                                    <field name="VAR">temp</field>
+                                                                </shadow>
+                                                            </value>
+                                                        </block>
+                                                    </next>
+                                                </block>
+                                            </next>
+                                        </block>
+                                    </next>
+                                </block>
+                        </block>
+                    </next>
+                    </statement>
+                </block>
+            </category>
+        </category>
+    </xml>
+    <xml id="blocklyDefault" style="display: none">
+        <block type="chaincode_init">
+            <statement name="init_func">
+                <block type="set_value">
+                    <field name="data">Tom</field>
+                    <value name="VARIABLE">
+                        <block type="math_number">
+                            <field name="NUM">500</field>
+                        </block>
+                    </value>
+                    <next>
+                        <block type="set_value">
+                            <field name="data">Nick</field>
+                            <value name="VARIABLE">
+                                <block type="math_number">
+                                    <field name="NUM">1000</field>
+                                </block>
+                            </value>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+            <next>
+                <block type="chaincode_body">
+                    <statement name="body_func">
+                        <block type="chaincode_invoke">
+                            <value name="user_A">
+                                <block type="variables_get">
+                                    <field name="VAR">Tom</field>
+                                </block>
+                            </value>
+                            <value name="user_B">
+                                <block type="variables_get">
+                                    <field name="VAR">Nick</field>
+                                </block>
+                            </value>
+                            <value name="money_num">
+                                <block type="math_number">
+                                    <field name="NUM">120.5</field>
+                                </block>
+                            </value>
+                            <next>
+                                <block type="chaincode_query">
+                                    <value name="user_Query">
+                                        <block type="variables_get">
+                                            <field name="VAR">Nick</field>
+                                        </block>
+                                    </value>
+                                    <next>
+                                        <block type="chaincode_delete">
+                                            <value name="user_Delete">
+                                                <block type="variables_get">
+                                                    <field name="VAR">Tom</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </next>
+                                </block>
+                            </next>
+                        </block>
+                </block>
+            </next>
+            </statement>
+        </block>
+    </xml>
+        <script>
+        //  var workspace = Blockly.inject('blocklyDiv',
+        //      {toolbox: document.getElementById('toolbox')});
+        // Construct the toolbox XML.
+        var toolboxText = document.getElementById('toolbox').outerHTML;
+        var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+        var workspace = Blockly.inject('blocklyDiv', {
+            grid: {
+                spacing: 25,
+                length: 25,
+                colour: '#ccc',
+                snap: true
+            },
+            media: 'blockly/media/',
+            toolbox: toolboxXml,
+            zoom: {
+                controls: true,
+                wheel: true
+            },
+            //sounds: false,
+            //rtl: true,
+            //trashcan: false
+        });
+        var defaultBlocks = document.getElementById('blocklyDefault');
+        Blockly.Xml.domToWorkspace(defaultBlocks, workspace);
+        workspace.scrollCenter();
+        workspace.zoomCenter(1);
+
+        function myUpdateFunction(event) {
+            var languageDropdown = document.getElementById('languageDropdown1');
+            var languageSelection = languageDropdown.options[languageDropdown.selectedIndex].value;
+            var codeDiv = document.getElementById('codeDiv1');
+            var codeHolder = document.createElement('pre');
+            codeHolder.id = 'code1';
+            codeHolder.className = 'prettyprint but-not-that-pretty';
+            var code = document.createTextNode(Blockly[languageSelection].workspaceToCode(workspace));
+            codeHolder.appendChild(code);
+            codeDiv1.replaceChild(codeHolder, codeDiv1.lastElementChild);
+
+            languageDropdown = document.getElementById('languageDropdown2');
+            languageSelection = languageDropdown.options[languageDropdown.selectedIndex].value;
+            codeDiv = document.getElementById('codeDiv2');
+            codeHolder = document.createElement('pre');
+            codeHolder.id = 'code2';
+            codeHolder.className = 'prettyprint but-not-that-pretty';
+            code = document.createTextNode(Blockly[languageSelection].workspaceToCode(workspace));
+            codeHolder.appendChild(code);
+            codeDiv2.replaceChild(codeHolder, codeDiv2.lastElementChild);
+        }
+        workspace.addChangeListener(myUpdateFunction);
+
+        document.getElementById("linkButton").addEventListener("click", function() {
+            workspace.scrollCenter();
+        });
+
+        function executeBlockCode() {
+            window.alert("waiting completement");
+        }
+        document.getElementById("playButton").addEventListener("click", executeBlockCode);
+
+        function saveXML() {
+            var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+            var contents = Blockly.Xml.domToPrettyText(xmlDom);
+            window.alert(contents);
+            var fileType = 'xml';
+            var filename = prompt('Enter the file name under which to save your blocks.', 'test.xml');
+            // Download file if all necessary parameters are provided.
+            if(filename) {
+                var data = new Blob([contents], {
+                    type: 'text/' + fileType
+                });
+                var clickEvent = new MouseEvent("click", {
+                    "view": window,
+                    "bubbles": true,
+                    "cancelable": false
+                });
+
+                var a = document.createElement('a');
+                a.href = window.URL.createObjectURL(data);
+                a.download = filename;
+                a.textContent = 'Download file!';
+                a.dispatchEvent(clickEvent);
+                window.alert("保存成功");
+            } else {
+                alert('Could not export Blocks without file name under which to ' +
+                    'save blocks.');
+            }
+        }
+        function publish(){
+            var code = document.getElementById('code1');
+            var content= document.getElementById('content_publish');
+            var price= document.getElementById('price_publish');
+            var name= document.getElementById('name_publish');
+            var description= document.getElementById('description_publish');
+            content.value = code.innerHTML; 
+            price.value = prompt("请输入价格$", "");
+            name.value = prompt("请输入合约名称(不支持中文和特殊字符)", "");
+            description.value = prompt("请输入合约简介(不支持中文和特殊字符)", "");
+            var form = document.getElementById('from_publish');
+            form.submit();
+        }
+        function upload(){
+            var code = document.getElementById('code1');
+            var content= document.getElementById('content_upload');
+            var price= document.getElementById('price_upload');
+            var name= document.getElementById('name_upload');
+            var description= document.getElementById('description_upload');
+
+            content.value = code.innerHTML; 
+            price.value ="own";
+            name.value = prompt("请输入合约名称(不支持中文和特殊字符)", "");
+            description.value = prompt("请输入合约简介(不支持中文和特殊字符)", "");
+            var form = document.getElementById('from_upload');
+            form.submit();
+        }
+        function saveGO() {
+            //window.alert("123");
+            //var code = document.createTextNode(Blockly['Go'].workspaceToCode(workspace));
+            var code = document.getElementById('code1');
+            var content = code.innerHTML;
+            window.alert(content);
+            var fileType = 'go';
+            var filename = prompt('Enter the file name under which to save your go code.', 'test.go');
+            // Download file if all necessary parameters are provided.
+            if(filename) {
+                var data = new Blob([content], {
+                    type: 'text/' + fileType
+                });
+                var clickEvent = new MouseEvent("click", {
+                    "view": window,
+                    "bubbles": true,
+                    "cancelable": false
+                });
+
+                var a = document.createElement('a');
+                a.href = window.URL.createObjectURL(data);
+                a.download = filename;
+                a.textContent = 'Download code file!';
+                a.dispatchEvent(clickEvent);
+                window.alert("保存成功");
+            } else {
+                alert('Could not export Blocks without file name under which to ' +
+                    'save go code.');
+            }
+        }
+
+        function loadXML() {
+            //window.alert("打开成功");
+            var files = document.getElementById('files');
+            // If the file list is empty, the user likely canceled in the dialog.
+            if(files.files.length > 0) {
+                // The input tag doesn't have the "multiple" attribute
+                // so the user can only choose 1 file.
+                var file = files.files[0];
+                var fileReader = new FileReader();
+            }
+            fileReader.addEventListener('load', function(event) {
+                var fileContents = event.target.result;
+                // Create empty object to hold the read block library information.
+                //window.alert(fileContents);
+                if(fileContents) {
+                    Blockly.mainWorkspace.clear();
+                    xmlDom = Blockly.Xml.textToDom(fileContents);
+                    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+                    window.alert("打开成功");
+                }
+            });
+            fileReader.readAsText(file);
+        }
+
+        function saveWorkspace() {
+            var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+            var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+
+            localStorage.setItem("blockly.xml", xmlText);
+            window.alert("保存成功");
+        }
+
+        function loadWorkspace() {
+            var xmlText = localStorage.getItem("blockly.xml");
+            //window.alert(xmlText);
+            if(xmlText) {
+                Blockly.mainWorkspace.clear();              xmlDom = Blockly.Xml.textToDom(xmlText);
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+                window.alert("打开成功");
+            }
+        }
+
+        function deleteWorkspace() {Lab
+            var count = workspace.getAllBlocks().length;
+            if(count < 2 ||
+                window.confirm(Blockly.Msg.DELETE_ALL_BLOCKS.replace('%1', count))) {
+                workspace.clear();
+                if(window.location.hash) {
+                    window.location.hash = '';
+                }
+            }
+
+            //onClick="workspace.scrollCenter()" 居中
+            //onClick="workspace.zoomCenter(1)" 放大
+            //onClick="workspace.zoomCenter(-1)" 缩小
+            //<div id="playButton" class="play-button material-icons">run</div>
+        };
+    </script>
+    
+  </body>
+  
+</html>
+                <!-- End PAge Content -->
+            </div>
+            <!-- End Container fluid  -->
+
+    

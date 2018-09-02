@@ -1,0 +1,188 @@
+            <!-- Bread crumb -->
+<script src="http://cdn.bootcss.com/ace/1.2.4/ace.js"></script>
+<script src="http://cdn.bootcss.com/ace/1.2.4/ext-language_tools.js"></script>
+<script src="http://cdn.bootcss.com/ace/1.2.4/ext-old_ie.js"></script>
+<script src="http://cdn.bootcss.com/ace/1.2.4/theme-monokai.js"></script>
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Contract Details</h3> </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/market">Store</a></li>
+                        <li class="breadcrumb-item active">Details</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+              <div class="row">
+                    <div class="col-md-3">
+                        <div class="card p-30">
+                            <div class="media">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="fa fa-archive f-s-40 color-primary"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2>{{item.name}}</h2>
+                                    <p class="m-b-0">Name</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card p-30">
+                            <div class="media">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="fa fa-shopping-cart f-s-40 color-success"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2>{{item.description}}</h2>
+                                    <p class="m-b-0">Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card p-30">
+                            <div class="media">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="fa fa-usd f-s-40 color-warning"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2>{{item.price}}</h2>
+                                    <p class="m-b-0">Price</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card p-30">
+                            <div class="media">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="fa fa-user f-s-40 color-danger"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2>{{item.author_id}}</h2>
+                                    <p class="m-b-0">Author</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+ 
+                 
+                    <div class="card-body" id="compile-editor" style="border-radius:10px;margin:0 auto;width: 100%;height: 450px;">
+                                {{item.content}}
+                    </div>
+                    <form style="margin:0 auto;" action="" method="get" >
+                        <button style="margin:20px 0 35% 45%;" class="btn btn-primary " type="button" onclick="purchase()">Buy</button>
+                    </form>
+                </div>
+                   
+ 
+
+                <!-- End PAge Content -->
+            </div>
+                        <form id="from_upload" action='/upload' method='get'>
+                        <input type="hidden" id="content_upload" name="content_upload" value={{item.content}}>
+                        <input type="hidden" id="price_upload" name="price_upload" value={{item.price}}>
+                        <input type="hidden" id="name_upload" name="name_upload" value={{item.name}}>
+                        <input type="hidden" id="description_upload" name="description_upload" value={{item.description}}>
+                        <input type="hidden" id="author_upload" name="author_upload" value={{item.author_id}}>
+                        </form>
+
+<script type="text/javascript">
+
+require("ace/ext/old_ie");
+ace.require("ace/ext/language_tools");
+var editor = ace.edit("compile-editor");
+editor.$blockScrolling = Infinity;
+editor.setFontSize(16);
+editor.session.setMode("ace/mode/golang");
+editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true
+});
+editor.setTheme("ace/theme/basic");
+</script>
+<script type="text/javascript">
+function purchase(){
+    var buyer_account_id={{buyer_account_id}};
+    var author_account_id={{author_account_id}};
+    var price={{item.price}};
+    var buyer_moeny;
+    buyer_account_id=buyer_account_id.toString();
+    author_account_id=author_account_id.toString();
+if(buyer_account_id!=author_account_id)
+    $.post("https://developers.vnt.link/chaincode/query",
+        JSON.stringify({
+        "channel":"mychannel",
+        "ccName":"chaincode_example02",
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJKdGkiOiIxMTQ5NzkifQ.5ERN44vbFdU7UmpVvysD1xCV82Q0eUfAlUYqtpumLIk",
+        "fcn":"query",
+        "args":[buyer_account_id]
+        }),
+    function(data_buyer,status){
+        console.log("buyer",data_buyer);
+        console.log("buyer",data_buyer.payload);
+        buyer_moeny=Number(data_buyer.payload)
+
+            $.post("https://developers.vnt.link/chaincode/query",
+                JSON.stringify({
+                "channel":"mychannel",
+                "ccName":"chaincode_example02",
+                "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJKdGkiOiIxMTQ5NzkifQ.5ERN44vbFdU7UmpVvysD1xCV82Q0eUfAlUYqtpumLIk",
+                "fcn":"query",
+                "args":[author_account_id]
+                }),
+            function(data_author,status){
+                console.log("author",data_author);
+                console.log("author",data_author.payload);
+
+    //*********************************************
+                if(buyer_moeny>=price){
+                    $.post("https://developers.vnt.link/chaincode/invoke",
+                        JSON.stringify({
+                        "channel":"mychannel",
+                        "ccName":"chaincode_example02",
+                        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJKdGkiOiIxMTQ5NzkifQ.5ERN44vbFdU7UmpVvysD1xCV82Q0eUfAlUYqtpumLIk",
+                        "fcn":"transfer",
+                        "args":[buyer_account_id,author_account_id,price.toString()]
+                        }),
+                    function(data,status){
+                        console.log(data);
+                        if(data.status=="200"){
+                            var str="购买成功！ 余额：$"+buyer_moeny.toString()+"->$"+(buyer_moeny-price).toString()
+                            alert(str)
+                                var content= document.getElementById('content_upload');
+                                var price= document.getElementById('price_upload');
+                                var name= document.getElementById('name_upload');
+                                var description= document.getElementById('description_upload');
+                                var author=document.getElementById('author_upload');
+ 
+                                var form = document.getElementById('from_upload');
+                                form.submit();
+                        }
+                        else
+                            alert("购买失败！")
+                    });
+                }
+                else {
+                    alert("余额不足！");    
+                }    
+    //*********************************************
+            });
+    });
+else alert("无法购买自己的合约！");
+
+
+
+
+
+   }
+            </script>
+            <!-- End Container fluid  -->
